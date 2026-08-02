@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  migrations:
+    image: syntrixsoft/repo:synestatex_ai_prod
+    working_dir: /app
+    volumes:
+      - ..:/app
+    # command: python manage.py migrate --noinput
+    env_file:
+      - ../.env
+    environment:
+      PYTHONUNBUFFERED: 1
+      DB_NAME: synestatex_ai
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+networks:
+  default:
+    external:
+      name: syntrixsoft-network

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.DS_Store
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+**/migrations/*.py
+!**/migrations/__init__.py
+
+
+
+# Environment
+.env
+
+# Django local overrides (never commit)
+local_settings.py
+**/local_settings.py
+local_settings/
+
+# IDE / tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/

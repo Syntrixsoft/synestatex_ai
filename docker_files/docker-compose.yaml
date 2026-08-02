@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  synestatex_ai:
+    image: syntrixsoft/repo:synestatex_ai_prod
+    working_dir: /app
+    volumes:
+      - "/data/nginx/synestatex_ai/static:/var/www/html/static"
+      - "/data/nginx/synestatex_ai/media:/var/www/html/media"
+    env_file:
+      - ../.env
+    environment:
+      PYTHONUNBUFFERED: 1
+
+networks:
+  default:
+    external:
+      name: syntrixsoft-network

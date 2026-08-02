@@ -1,0 +1,57 @@
+# Build images (run from project root)
+
+docker build -t syntrixsoft/repo:synestatex_ai_env . -f docker_files/DockerfileEnv
+docker build -t syntrixsoft/repo:synestatex_ai_prod . -f Dockerfile
+
+# Create external network (once, on the host)
+docker network create syntrixsoft-network
+
+# Local development (Postgres + runserver)
+docker compose -f docker_files/docker-compose-local.yaml up --build
+
+# Production services (Postgres, Nginx, Redis, Certbot)
+docker compose -f docker_files/docker-compose-service.yaml up -d
+
+# Production web app
+docker compose -f docker_files/docker-compose.yaml up -d
+
+# Run migrations (requires syntrixsoft-network + postgres running)
+docker compose -f docker_files/docker-compose-migrations.yaml run --rm migrations
+
+# Collect static files (one-off — copies all assets to nginx volume via STATIC_ROOT in local_settings.py)
+docker compose -f docker_files/docker-compose-migrations.yaml run --rm migrations python manage.py collectstatic --noinput
+
+# Regenerate sitemap.xml + llms.txt (writes to static/ and STATIC_ROOT=/var/www/html/static in production)
+docker compose -f docker_files/docker-compose.yaml exec synestatex_ai python manage.py generate_seo_files
+
+# -----------------------------------------------------------------------------
+# Local development with uv (no Docker)
+# Requires: Python 3.13+, uv, PostgreSQL running on localhost
+# Run all commands from the project root
+# -----------------------------------------------------------------------------
+
+# Install uv (once)
+# curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install PostgreSQL (macOS example, once)
+# brew install postgresql@17
+# brew services start postgresql@17
+# createdb synestatex_ai
+
+# Environment
+cp .env.example .env
+# Set DEBUG=True and DB_* values in .env (DB_HOST=localhost)
+
+# Install dependencies
+uv sync
+
+# Database
+uv run python manage.py migrate
+
+# Run dev server → http://127.0.0.1:8000/
+uv run python manage.py runserver
+
+# Optional
+# uv run python manage.py createsuperuser
+# uv run python manage.py makemigrations
+# uv run python manage.py collectstatic
