@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 def get_unique_filename(instance_id,filename,length=16):
     ext = filename.split('.')[-1]
     random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
-    filename = 'syntrixsoft-{}.{}'.format(random_suffix,ext)
+    filename = 'synestatex_ai-{}.{}'.format(random_suffix,ext)
     return filename
 
 def generate_unique_slug(

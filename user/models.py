@@ -118,8 +118,8 @@ class User(core_models.BaseModel,AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-    profile = models.ImageField(
-        upload_to=utils.profile_directory, null=True, blank=True, max_length=250
+    profile_image = models.ImageField(
+        upload_to=utils.profile_image_directory, null=True, blank=True, max_length=250
     )
     
     EMAIL_FIELD = "email"
@@ -171,5 +171,5 @@ class User(core_models.BaseModel,AbstractBaseUser, PermissionsMixin):
         img_temp.write(r.content)
         img_temp.flush()
         self.profile.save(
-            "syntrixsoft-{}.jpg".format(str(self.id)[:10]), File(img_temp), save=True
+            "synestatex_ai-{}.jpg".format(str(self.id)[:10]), File(img_temp), save=True
         )
