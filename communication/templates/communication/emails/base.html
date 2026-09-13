@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ subject }}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8;padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
+          <tr>
+            <td style="background-color:#111827;padding:20px 32px;color:#ffffff;font-size:20px;font-weight:bold;">
+              SynEstateX
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              {% block content %}{% endblock %}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:16px 32px 32px;color:#6b7280;font-size:12px;line-height:18px;">
+              {% block footer %}
+              This is an automated message. Please do not reply to this email.
+              {% if site_url %}<br>Visit <a href="{{ site_url }}" style="color:#111827;">{{ site_url }}</a>{% endif %}
+              {% endblock %}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

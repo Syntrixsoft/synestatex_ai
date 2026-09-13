@@ -57,6 +57,8 @@ LOCAL_APPS = [
     'user',
     'agent',
     'organization',
+    'verification',
+    'communication',
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
@@ -175,6 +177,29 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+OTP_LENGTH = env.int("OTP_LENGTH", default=6)
+OTP_EXPIRY_SECONDS = env.int("OTP_EXPIRY_SECONDS", default=300)
+OTP_MAX_ATTEMPTS = env.int("OTP_MAX_ATTEMPTS", default=5)
+OTP_RESEND_SECONDS = env.int("OTP_RESEND_SECONDS", default=60)
+
+MSG91_AUTH_KEY = env("MSG91_AUTH_KEY", default="")
+MSG91_SENDER_ID = env("MSG91_SENDER_ID", default="")
+MSG91_TEMPLATE_ID = env("MSG91_TEMPLATE_ID", default="")
+
+EMAIL_BACKEND = env(
+    "EMAIL_BACKEND",
+    default="django.core.mail.backends.smtp.EmailBackend",
+)
+EMAIL_HOST = env("EMAIL_HOST", default="")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@localhost")
+EMAIL_REPLY_TO = env("EMAIL_REPLY_TO", default="")
+EMAIL_DEFAULT_SUBJECT = env("EMAIL_DEFAULT_SUBJECT", default="Notification")
 
 try:
     from .local_settings import *

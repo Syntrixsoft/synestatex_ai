@@ -77,3 +77,29 @@ class ResourcePermissionLevelChoices(models.TextChoices):
     VIEW = "VIEW", "View"
     EDIT = "EDIT", "Edit"
     MANAGE = "MANAGE", "Manage"
+
+
+class OtpPurposeChoices(models.TextChoices):
+    SIGNUP = "SIGNUP", "Signup"
+    LOGIN = "LOGIN", "Login"
+    EMAIL_VERIFY = "EMAIL_VERIFY", "Email verify"
+    PHONE_VERIFY = "PHONE_VERIFY", "Phone verify"
+    PASSWORD_RESET = "PASSWORD_RESET", "Password reset"
+
+
+class OtpChannelChoices(models.TextChoices):
+    EMAIL = "EMAIL", "Email"
+    SMS = "SMS", "SMS"
+
+
+class OtpStatusChoices(models.TextChoices):
+    PENDING = "PENDING", "Pending"
+    VERIFIED = "VERIFIED", "Verified"
+    EXPIRED = "EXPIRED", "Expired"
+    INVALIDATED = "INVALIDATED", "Invalidated"
+    FAILED = "FAILED", "Failed"
+
+
+class CommunicationChannelChoices(models.TextChoices):
+    EMAIL = "EMAIL", "Email"
+    SMS = "SMS", "SMS"

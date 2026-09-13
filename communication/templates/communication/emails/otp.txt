@@ -1,0 +1,8 @@
+{{ heading }}
+
+For: {{ purpose_label }}
+{{ message }}
+
+Your one-time password: {{ otp_code }}
+
+This code expires in {{ expiry_minutes }} minutes. Do not share it with anyone.

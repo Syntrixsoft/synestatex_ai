@@ -1,0 +1,10 @@
+{% extends "communication/emails/base.html" %}
+
+{% block content %}
+<h1 style="margin:0 0 8px;font-size:22px;color:#111827;">{{ heading }}</h1>
+<p style="margin:0 0 16px;font-size:14px;color:#6b7280;text-transform:capitalize;">For: {{ purpose_label }}</p>
+<p style="margin:0 0 24px;font-size:16px;line-height:24px;">{{ message }}</p>
+<p style="margin:0 0 8px;font-size:14px;color:#6b7280;">Your one-time password</p>
+<p style="margin:0 0 24px;font-size:32px;letter-spacing:8px;font-weight:bold;color:#111827;">{{ otp_code }}</p>
+<p style="margin:0;font-size:14px;color:#6b7280;">This code expires in {{ expiry_minutes }} minutes. Do not share it with anyone.</p>
+{% endblock %}
