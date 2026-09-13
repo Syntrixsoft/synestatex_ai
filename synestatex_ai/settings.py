@@ -54,7 +54,9 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'core',
-    'user'
+    'user',
+    'agent',
+    'organization',
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS

@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.query import QuerySet
 from django.core.validators import MaxLengthValidator
@@ -237,3 +239,39 @@ class TextPlaceholder(BaseModel):
     def get(cls,key,default=0,editable=True):
         c,created=TextPlaceholder.objects.get_or_create(key=key,defaults={'value':default})
         return c.value
+
+
+class Address(BaseModel):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.UUIDField()
+    owner = GenericForeignKey("content_type", "object_id")
+    address_type = models.CharField(
+        max_length=20,
+        choices=choices.AddressTypeChoices.choices,
+        default=choices.AddressTypeChoices.HOME,
+    )
+    line1 = models.CharField(max_length=255)
+    line2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    pincode = models.CharField(max_length=10)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
+    is_default = models.BooleanField(default=False)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.is_default:
+            Address.objects.filter(
+                content_type=self.content_type,
+                object_id=self.object_id,
+                is_default=True,
+            ).exclude(pk=self.pk).update(is_default=False)
+
+    def __str__(self):
+        return "{} - {}, {}".format(self.address_type, self.city, self.pincode)

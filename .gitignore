@@ -33,3 +33,4 @@ local_settings/
 .ruff_cache/
 .coverage
 htmlcov/
+*.docx

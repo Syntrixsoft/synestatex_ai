@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Configuration, Contact, NewsletterSubscriber
+from .models import Address, Configuration, Contact, NewsletterSubscriber
 
 
 @admin.register(Contact)
@@ -12,3 +12,4 @@ class ContactAdmin(admin.ModelAdmin):
 
 admin.site.register(Configuration)
 admin.site.register(NewsletterSubscriber)
+admin.site.register(Address)
