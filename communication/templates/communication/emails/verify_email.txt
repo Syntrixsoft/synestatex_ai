@@ -1,0 +1,10 @@
+Verify your email
+
+Hi{% if name %} {{ name }}{% endif %}, please verify your email address to activate your SynEstateX account.
+
+Verification token:
+{{ token }}
+
+{% if verify_url %}Verification page: {{ verify_url }}
+{% endif %}
+This link expires in {{ expiry_hours }} hours.

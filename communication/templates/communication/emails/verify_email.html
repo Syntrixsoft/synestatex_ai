@@ -1,0 +1,19 @@
+{% extends "communication/emails/base.html" %}
+
+{% block content %}
+<h1 style="margin:0 0 16px;font-size:22px;color:#111827;">Verify your email</h1>
+<p style="margin:0 0 16px;font-size:16px;line-height:24px;">
+  Hi{% if name %} {{ name }}{% endif %}, please verify your email address to activate your SynEstateX account.
+</p>
+<p style="margin:0 0 24px;font-size:14px;color:#6b7280;">
+  Use the verification token below in the app, or open the verification page.
+</p>
+<p style="margin:0 0 8px;font-size:14px;color:#6b7280;">Verification token</p>
+<p style="margin:0 0 24px;font-size:14px;word-break:break-all;color:#111827;background:#f4f6f8;padding:12px;border-radius:6px;">{{ token }}</p>
+{% if verify_url %}
+<p style="margin:0 0 24px;">
+  <a href="{{ verify_url }}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:bold;">Verify email</a>
+</p>
+{% endif %}
+<p style="margin:0;font-size:14px;color:#6b7280;">This link expires in {{ expiry_hours }} hours.</p>
+{% endblock %}

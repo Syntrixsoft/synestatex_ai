@@ -110,3 +110,17 @@ class CommunicationLogStatusChoices(models.TextChoices):
     SUCCESS = "SUCCESS", "Success"
     FAILED = "FAILED", "Failed"
     PENDING = "PENDING", "Pending"
+
+
+class SignupSourceChoices(models.TextChoices):
+    PHONE_OTP = "PHONE_OTP", "Phone OTP"
+    EMAIL_OTP = "EMAIL_OTP", "Email OTP"
+    EMAIL_PASSWORD = "EMAIL_PASSWORD", "Email Password"
+    GOOGLE = "GOOGLE", "Google"
+
+
+class InviteStatusChoices(models.TextChoices):
+    PENDING = "PENDING", "Pending"
+    ACCEPTED = "ACCEPTED", "Accepted"
+    EXPIRED = "EXPIRED", "Expired"
+    REVOKED = "REVOKED", "Revoked"

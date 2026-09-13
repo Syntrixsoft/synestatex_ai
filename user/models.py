@@ -105,8 +105,22 @@ class User(core_models.BaseModel,AbstractBaseUser, PermissionsMixin):
     """
 
     name = models.CharField(_("name"), max_length=150, blank=True)
-    email = models.EmailField(_("email address"), unique=True)
+    email = models.EmailField(_("email address"), unique=True, null=True, blank=True)
     phone = models.CharField(max_length=20, unique=True, null=True, blank=True)
+    # NOTE: signup_source is for display/analytics only -- it records the user's
+    # original signup method and never changes after account creation, even if
+    # the user later adds a password or links Google. It must NEVER be used to
+    # gate login. To check whether a login method is currently usable, check the
+    # actual credential instead:
+    #   - OTP login:      user.phone_verified or user.email_verified
+    #   - Password login: user.has_usable_password()
+    #   - Google login:   user.google_id is not None
+    signup_source = models.CharField(
+        max_length=20,
+        choices=choices.SignupSourceChoices.choices,
+        default=choices.SignupSourceChoices.PHONE_OTP,
+    )
+    google_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     account_type = models.CharField(
         max_length=20,
         choices=choices.AccountTypeChoices.choices,
@@ -152,6 +166,7 @@ class User(core_models.BaseModel,AbstractBaseUser, PermissionsMixin):
         indexes = [
             models.Index(fields=["phone"]),
             models.Index(fields=["status"]),
+            models.Index(fields=["google_id"]),
         ]
         
     def __str__(self):

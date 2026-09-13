@@ -1,0 +1,12 @@
+You are invited
+
+You have been invited to join {{ company_name }} as {{ designation }}.
+{% if invited_by_name %}
+Invited by {{ invited_by_name }}
+{% endif %}
+
+Accept the invite to join the team on SynEstateX.
+
+{% if invite_link %}Invite link: {{ invite_link }}
+{% endif %}
+This invite expires on {{ expires_at }}.

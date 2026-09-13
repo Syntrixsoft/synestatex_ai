@@ -21,6 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('synestatex_ai-admin/', admin.site.urls),
+    path("user/", include("user.urls")),
+    path("agent/", include("agent.urls")),
+    path("organization/", include("organization.urls")),
     path("core/", include("core.urls")),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

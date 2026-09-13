@@ -1,0 +1,20 @@
+{% extends "communication/emails/base.html" %}
+
+{% block content %}
+<h1 style="margin:0 0 16px;font-size:22px;color:#111827;">You are invited</h1>
+<p style="margin:0 0 16px;font-size:16px;line-height:24px;">
+  You have been invited to join <strong>{{ company_name }}</strong> as <strong>{{ designation }}</strong>.
+</p>
+{% if invited_by_name %}
+<p style="margin:0 0 16px;font-size:14px;color:#6b7280;">Invited by {{ invited_by_name }}</p>
+{% endif %}
+<p style="margin:0 0 24px;font-size:14px;color:#6b7280;">
+  Accept the invite to join the team and start collaborating on SynEstateX.
+</p>
+{% if invite_link %}
+<p style="margin:0 0 24px;">
+  <a href="{{ invite_link }}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:bold;">Accept invite</a>
+</p>
+{% endif %}
+<p style="margin:0;font-size:14px;color:#6b7280;">This invite expires on {{ expires_at }}.</p>
+{% endblock %}

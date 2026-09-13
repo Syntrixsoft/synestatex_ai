@@ -1,3 +1,0 @@
-{% if heading %}{{ heading }}
-
-{% endif %}{{ body }}

@@ -243,6 +243,8 @@ DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@localhost")
 EMAIL_REPLY_TO = env("EMAIL_REPLY_TO", default="")
 EMAIL_DEFAULT_SUBJECT = env("EMAIL_DEFAULT_SUBJECT", default="Notification")
 
+GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID", default="")
+
 try:
     from .local_settings import *
 except ImportError:

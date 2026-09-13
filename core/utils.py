@@ -1,9 +1,15 @@
-from django.utils.text import slugify
-from typing import Type, Union, TYPE_CHECKING
-from django.db.models import Model
-from django.urls import reverse
-import string
+import re
 import random
+import string
+from typing import TYPE_CHECKING, Type, Union
+
+from django.conf import settings
+from django.db.models import Model
+from django.utils.text import slugify
+from rest_framework.exceptions import NotFound, ValidationError
+
+from core import choices
+from core.exceptions import Conflict, Gone
 
 
 if TYPE_CHECKING:
@@ -51,5 +57,45 @@ def generate_unique_slug(
         unique_slug = f"{slug}-{extension}"
 
     return unique_slug
+
+
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def parse_identifier(identifier):
+    identifier = (identifier or "").strip()
+    if not identifier:
+        raise ValueError("Identifier is required")
+    if "@" in identifier:
+        normalized = identifier.lower()
+        if not EMAIL_RE.match(normalized):
+            raise ValueError("Invalid email format")
+        return choices.OtpChannelChoices.EMAIL, normalized
+    return choices.OtpChannelChoices.SMS, identifier
+
+
+def build_site_url(*parts):
+    base = getattr(settings, "SITE_URL", "").rstrip("/")
+    path = "/".join(str(part).strip("/") for part in parts if part)
+    return "{}/{}".format(base, path) if path else base
+
+
+def map_service_error(exc):
+    if not isinstance(exc, ValidationError):
+        raise exc
+    codes = exc.get_codes()
+    code = None
+    if isinstance(codes, dict):
+        code = next(iter(codes.values()), None)
+        if isinstance(code, list):
+            code = code[0] if code else None
+    detail = exc.detail
+    if code == "not_found":
+        raise NotFound(detail)
+    if code == "gone":
+        raise Gone(detail)
+    if code == "conflict":
+        raise Conflict(detail)
+    raise exc
 
 
