@@ -103,3 +103,10 @@ class OtpStatusChoices(models.TextChoices):
 class CommunicationChannelChoices(models.TextChoices):
     EMAIL = "EMAIL", "Email"
     SMS = "SMS", "SMS"
+    WHATSAPP = "WHATSAPP", "WhatsApp"
+
+
+class CommunicationLogStatusChoices(models.TextChoices):
+    SUCCESS = "SUCCESS", "Success"
+    FAILED = "FAILED", "Failed"
+    PENDING = "PENDING", "Pending"

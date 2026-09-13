@@ -59,6 +59,7 @@ LOCAL_APPS = [
     'organization',
     'verification',
     'communication',
+    'logs',
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS

@@ -8,6 +8,7 @@ from django.utils.html import strip_tags
 
 from communication.base import BaseChannelService
 from core import choices
+from logs.service import CommunicationLogService
 
 
 class EmailService(BaseChannelService):
@@ -46,6 +47,7 @@ class EmailService(BaseChannelService):
         reply_to = cls._as_list(reply_to) or cls._as_list(
             getattr(settings, "EMAIL_REPLY_TO", "")
         )
+        provider = "console" if not getattr(settings, "EMAIL_HOST", "") else "smtp"
 
         email = EmailMultiAlternatives(
             subject=subject,
@@ -60,12 +62,42 @@ class EmailService(BaseChannelService):
         email.attach_alternative(html_body, "text/html")
         cls._attach_files(email, attachments)
 
-        if not getattr(settings, "EMAIL_HOST", ""):
-            cls._print_to_console(email, html_body)
-            return True
+        try:
+            if provider == "console":
+                cls._print_to_console(email, html_body)
+            else:
+                email.send(fail_silently=False)
 
-        email.send(fail_silently=False)
-        return True
+            CommunicationLogService.log(
+                channel=cls.channel,
+                recipient=to_list,
+                provider=provider,
+                sender=from_email,
+                subject=subject,
+                body=text_body,
+                template=template,
+                payload={
+                    "cc": cls._as_list(cc),
+                    "bcc": cls._as_list(bcc),
+                    "reply_to": reply_to,
+                    "context_keys": list(context.keys()),
+                },
+            )
+            return True
+        except Exception as exc:
+            CommunicationLogService.log(
+                channel=cls.channel,
+                status=choices.CommunicationLogStatusChoices.FAILED,
+                recipient=to_list,
+                provider=provider,
+                sender=from_email,
+                subject=subject,
+                body=text_body,
+                template=template,
+                error_message=str(exc),
+                payload={"reply_to": reply_to},
+            )
+            raise
 
     @classmethod
     def _render_text(cls, template, text_template, html_body, context):
